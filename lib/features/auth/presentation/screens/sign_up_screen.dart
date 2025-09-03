@@ -1,3 +1,4 @@
+import 'package:e_commerce/features/auth/presentation/screens/otp_verificatio_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:e_commerce/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/app_logo.dart';
@@ -128,9 +129,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _onTapSignUpButton();
-                        }
+                        // if (_formKey.currentState!.validate()) {
+                        //   _onTapSignUpButton();
+                        // }
+                        _onTapSignUpButton();
                       },
                       child: const Text(
                         "Sign Up",
@@ -165,7 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _onTapSignUpButton() {
-    //TODO: HAVE TO COMPLETE SIGNUP BUTTON
+    Navigator.pushNamed(context, OtpVerificationScreen.name);
   }
 
   void _onTapSignInButton() {
