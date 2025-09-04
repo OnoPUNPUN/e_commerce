@@ -26,21 +26,36 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
       builder: (mainNavbarController) {
         return Scaffold(
           body: _screens[mainNavbarController.currentIndex],
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: mainNavbarController.currentIndex,
-            onDestinationSelected: mainNavbarController.changeIndex,
-            destinations: [
-              NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-              NavigationDestination(
-                icon: Icon(Icons.category),
-                label: 'Categories',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.shopping_cart),
-                label: 'Cart',
-              ),
-              NavigationDestination(icon: Icon(Icons.favorite), label: 'Wish'),
-            ],
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  spreadRadius: 0,
+                  blurRadius: 10,
+                  offset: Offset(0, -3),
+                ),
+              ],
+            ),
+            child: NavigationBar(
+              selectedIndex: mainNavbarController.currentIndex,
+              onDestinationSelected: mainNavbarController.changeIndex,
+              destinations: [
+                NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+                NavigationDestination(
+                  icon: Icon(Icons.category),
+                  label: 'Categories',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.shopping_cart),
+                  label: 'Cart',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.favorite),
+                  label: 'Wish',
+                ),
+              ],
+            ),
           ),
         );
       },
