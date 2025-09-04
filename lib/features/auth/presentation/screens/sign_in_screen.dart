@@ -1,3 +1,4 @@
+import 'package:e_commerce/features/auth/presentation/screens/bottom_navbar_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:e_commerce/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/app_logo.dart';
@@ -73,9 +74,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _onTapLoginButton();
-                        }
+                        // if (_formKey.currentState!.validate()) {
+                        //   _onTapLoginButton();
+                        // }
+                        _onTapLoginButton();
                       },
                       child: const Text(
                         "Login",
@@ -107,7 +109,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _onTapLoginButton() {
-    // TODO: HAVE TO COMPLETE LOGIN BUTTON
+    Navigator.pushReplacementNamed(context, BottomNavbarScreen.name);
   }
 
   void _onTapSignUpButton() {

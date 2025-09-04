@@ -1,4 +1,5 @@
 import 'package:e_commerce/app/app_theme.dart';
+import 'package:e_commerce/app/controller_bindings.dart';
 import 'package:e_commerce/app/controllers/language_controller.dart';
 import 'package:e_commerce/app/routes.dart';
 import 'package:e_commerce/features/auth/presentation/screens/splash_screen.dart';
@@ -28,7 +29,7 @@ class _CraftyBayState extends State<CraftyBay> {
     return GetBuilder(
       init: CraftyBay.languageController,
       builder: (languageController) {
-        return MaterialApp(
+        return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: [
             AppLocalizations.delegate,
@@ -45,6 +46,7 @@ class _CraftyBayState extends State<CraftyBay> {
           home: SplashScreen(),
           initialRoute: '/',
           onGenerateRoute: onGenerateRoute,
+          initialBinding: ControllerBindings(),
         );
       },
     );

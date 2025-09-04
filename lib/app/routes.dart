@@ -1,3 +1,4 @@
+import 'package:e_commerce/features/auth/presentation/screens/bottom_navbar_screen.dart';
 import 'package:e_commerce/features/auth/presentation/screens/otp_verificatio_screen.dart';
 import 'package:e_commerce/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:e_commerce/features/auth/presentation/screens/sign_up_screen.dart';
@@ -15,6 +16,8 @@ MaterialPageRoute onGenerateRoute(RouteSettings settings) {
     screen = SignUpScreen();
   } else if (settings.name == OtpVerificationScreen.name) {
     screen = OtpVerificationScreen();
+  } else if (settings.name == BottomNavbarScreen.name) {
+    screen = BottomNavbarScreen();
   }
   return MaterialPageRoute(builder: (ctx) => screen);
 }

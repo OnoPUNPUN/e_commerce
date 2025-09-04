@@ -1,0 +1,49 @@
+import 'package:e_commerce/features/auth/presentation/controllers/main_navbar_controller.dart';
+import 'package:e_commerce/features/auth/presentation/screens/home_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+
+class BottomNavbarScreen extends StatefulWidget {
+  const BottomNavbarScreen({super.key});
+
+  static const String name = '/bottom-nav-bar';
+
+  @override
+  State<BottomNavbarScreen> createState() => _BottomNavbarScreenState();
+}
+
+class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
+  final List<Widget> _screens = [
+    HomeScreen(),
+    HomeScreen(),
+    HomeScreen(),
+    HomeScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<MainNavbarController>(
+      builder: (mainNavbarController) {
+        return Scaffold(
+          body: _screens[mainNavbarController.currentIndex],
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: mainNavbarController.currentIndex,
+            onDestinationSelected: mainNavbarController.changeIndex,
+            destinations: [
+              NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+              NavigationDestination(
+                icon: Icon(Icons.category),
+                label: 'Categories',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.shopping_cart),
+                label: 'Cart',
+              ),
+              NavigationDestination(icon: Icon(Icons.favorite), label: 'Wish'),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
