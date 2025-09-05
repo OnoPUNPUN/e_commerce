@@ -129,6 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: () {
+                        //TODO:   HAVE TO REMOVE COMMENT
                         // if (_formKey.currentState!.validate()) {
                         //   _onTapSignUpButton();
                         // }
