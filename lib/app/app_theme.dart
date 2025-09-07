@@ -26,6 +26,14 @@ class AppTheme {
         fontWeight: FontWeight.w600,
         color: Colors.white,
       ),
+      titleMedium: TextStyle(fontSize: 22),
+    ),
+    appBarTheme: AppBarTheme(
+      titleTextStyle: TextStyle(
+        fontSize: 18,
+        color: Colors.black,
+        fontWeight: FontWeight.w500,
+      ),
     ),
   );
 

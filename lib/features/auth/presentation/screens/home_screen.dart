@@ -1,8 +1,11 @@
 import 'package:e_commerce/app/asset_paths.dart';
+import 'package:e_commerce/features/auth/presentation/controllers/main_navbar_controller.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/app_bar_icon.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/home_banner_slider.dart';
+import 'package:e_commerce/features/shared/presentation/widgets/product_categories_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,17 +33,60 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            _buildSearchBar(),
-            const SizedBox(height: 16),
-            HomeBannerSlider(),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              _buildSearchBar(),
+              const SizedBox(height: 16),
+              HomeBannerSlider(),
+              const SizedBox(height: 16),
+              _buildSectionHeader(
+                title: "All Categories",
+                onTap: () {
+                  Get.find<MainNavbarController>().moveToCategories();
+                },
+              ),
+              _buildCategoriesList(),
+              _buildSectionHeader(title: "Popular", onTap: () {}),
+              _buildSectionHeader(title: "New", onTap: () {}),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  SizedBox _buildCategoriesList() {
+    return SizedBox(
+      height: 120,
+      child: ListView.separated(
+        itemCount: 10,
+        primary: false,
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return ProductCategoriesItem();
+        },
+        separatorBuilder: (context, index) {
+          return const SizedBox(width: 14);
+        },
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader({
+    required String title,
+    required Function()? onTap,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title, style: Theme.of(context).textTheme.titleMedium),
+        TextButton(onPressed: onTap, child: Text('See All')),
+      ],
     );
   }
 

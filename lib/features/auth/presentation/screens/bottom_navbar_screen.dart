@@ -1,5 +1,6 @@
 import 'package:e_commerce/features/auth/presentation/controllers/main_navbar_controller.dart';
 import 'package:e_commerce/features/auth/presentation/screens/home_screen.dart';
+import 'package:e_commerce/features/categories/presnetation/screens/categories_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
@@ -15,7 +16,7 @@ class BottomNavbarScreen extends StatefulWidget {
 class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
   final List<Widget> _screens = [
     HomeScreen(),
-    HomeScreen(),
+    CategoriesScreen(),
     HomeScreen(),
     HomeScreen(),
   ];
