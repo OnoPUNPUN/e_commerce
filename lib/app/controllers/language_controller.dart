@@ -1,22 +1,26 @@
 import 'dart:ui';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:get/get.dart';
+class LanguageNotifier extends StateNotifier<Locale> {
+  LanguageNotifier() : super(const Locale('en'));
 
-class LanguageController extends GetxController {
-  Locale _currentLocale = Locale('en');
-
-  final List<Locale> _supportedLocales = [Locale('en'), Locale('bn')];
-
-  Locale get currentLocale => _currentLocale;
-
-  List<Locale> get supportedLocales => _supportedLocales;
+  final List<Locale> supportedLocales = [
+    const Locale('en'),
+    const Locale('bn'),
+  ];
 
   void changeLocale(Locale locale) {
-    if (_currentLocale == locale) {
+    if (state == locale) {
       return;
     }
-
-    _currentLocale = locale;
-    update();
+    state = locale;
   }
 }
+
+final languageProvider = StateNotifierProvider<LanguageNotifier, Locale>((ref) {
+  return LanguageNotifier();
+});
+
+final supportedLocalesProvider = Provider<List<Locale>>((ref) {
+  return [const Locale('en'), const Locale('bn')];
+});

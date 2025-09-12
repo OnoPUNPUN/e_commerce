@@ -4,19 +4,14 @@ import 'package:e_commerce/features/auth/presentation/widgets/app_bar_icon.dart'
 import 'package:e_commerce/features/auth/presentation/widgets/home_banner_slider.dart';
 import 'package:e_commerce/features/shared/presentation/widgets/product_categories_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -44,14 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
               HomeBannerSlider(),
               const SizedBox(height: 16),
               _buildSectionHeader(
+                context,
                 title: "All Categories",
                 onTap: () {
-                  Get.find<MainNavbarController>().moveToCategories();
+                  ref.read(mainNavbarProvider.notifier).moveToCategories();
                 },
               ),
               _buildCategoriesList(),
-              _buildSectionHeader(title: "Popular", onTap: () {}),
-              _buildSectionHeader(title: "New", onTap: () {}),
+              _buildSectionHeader(context, title: "Popular", onTap: () {}),
+              _buildSectionHeader(context, title: "New", onTap: () {}),
             ],
           ),
         ),
@@ -68,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return ProductCategoriesItem();
+          return const ProductCategoriesItem();
         },
         separatorBuilder: (context, index) {
           return const SizedBox(width: 14);
@@ -77,7 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSectionHeader({
+  Widget _buildSectionHeader(
+    BuildContext context, {
     required String title,
     required Function()? onTap,
   }) {
@@ -96,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onSubmitted: (String? text) {},
       decoration: InputDecoration(
         hintText: 'Search',
-        prefixIcon: Icon(Icons.search),
+        prefixIcon: const Icon(Icons.search),
         fillColor: Colors.grey.shade100,
         filled: true,
         enabledBorder: OutlineInputBorder(

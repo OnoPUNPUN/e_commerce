@@ -2,64 +2,55 @@ import 'package:e_commerce/features/auth/presentation/controllers/main_navbar_co
 import 'package:e_commerce/features/auth/presentation/screens/home_screen.dart';
 import 'package:e_commerce/features/categories/presnetation/screens/categories_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BottomNavbarScreen extends StatefulWidget {
+class BottomNavbarScreen extends ConsumerWidget {
   const BottomNavbarScreen({super.key});
 
   static const String name = '/bottom-nav-bar';
 
   @override
-  State<BottomNavbarScreen> createState() => _BottomNavbarScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(mainNavbarProvider);
+    final mainNavbarNotifier = ref.read(mainNavbarProvider.notifier);
 
-class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
-  final List<Widget> _screens = [
-    HomeScreen(),
-    CategoriesScreen(),
-    HomeScreen(),
-    HomeScreen(),
-  ];
+    final List<Widget> screens = [
+      const HomeScreen(),
+      const CategoriesScreen(),
+      const HomeScreen(),
+      const HomeScreen(),
+    ];
 
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<MainNavbarController>(
-      builder: (mainNavbarController) {
-        return Scaffold(
-          body: _screens[mainNavbarController.currentIndex],
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.2),
-                  spreadRadius: 0,
-                  blurRadius: 10,
-                  offset: Offset(0, -3),
-                ),
-              ],
+    return Scaffold(
+      body: screens[currentIndex],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              spreadRadius: 0,
+              blurRadius: 10,
+              offset: const Offset(0, -3),
             ),
-            child: NavigationBar(
-              selectedIndex: mainNavbarController.currentIndex,
-              onDestinationSelected: mainNavbarController.changeIndex,
-              destinations: [
-                NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-                NavigationDestination(
-                  icon: Icon(Icons.category),
-                  label: 'Categories',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.shopping_cart),
-                  label: 'Cart',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.favorite),
-                  label: 'Wish',
-                ),
-              ],
+          ],
+        ),
+        child: NavigationBar(
+          selectedIndex: currentIndex,
+          onDestinationSelected: mainNavbarNotifier.changeIndex,
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+            NavigationDestination(
+              icon: Icon(Icons.category),
+              label: 'Categories',
             ),
-          ),
-        );
-      },
+            NavigationDestination(
+              icon: Icon(Icons.shopping_cart),
+              label: 'Cart',
+            ),
+            NavigationDestination(icon: Icon(Icons.favorite), label: 'Wish'),
+          ],
+        ),
+      ),
     );
   }
 }

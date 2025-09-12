@@ -1,16 +1,13 @@
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainNavbarController extends GetxController {
-  int _selectedIndex = 0;
-
-  int get currentIndex => _selectedIndex;
+class MainNavbarNotifier extends StateNotifier<int> {
+  MainNavbarNotifier() : super(0);
 
   void changeIndex(int index) {
-    if (_selectedIndex == index) {
+    if (state == index) {
       return;
     }
-    _selectedIndex = index;
-    update();
+    state = index;
   }
 
   void moveToCategories() {
@@ -21,3 +18,9 @@ class MainNavbarController extends GetxController {
     changeIndex(0);
   }
 }
+
+final mainNavbarProvider = StateNotifierProvider<MainNavbarNotifier, int>((
+  ref,
+) {
+  return MainNavbarNotifier();
+});

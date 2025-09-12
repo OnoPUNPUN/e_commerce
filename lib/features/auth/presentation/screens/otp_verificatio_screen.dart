@@ -1,34 +1,18 @@
 import 'package:e_commerce/app/app_colors.dart';
+import 'package:e_commerce/features/auth/presentation/controllers/otp_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/app_logo.dart';
 
-class OtpController extends GetxController {
-  var secondsRemaining = 120.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    _startTimer();
-  }
-
-  void _startTimer() async {
-    while (secondsRemaining.value > 0) {
-      await Future.delayed(const Duration(seconds: 1));
-      secondsRemaining.value--;
-    }
-  }
-}
-
-class OtpVerificationScreen extends StatelessWidget {
+class OtpVerificationScreen extends ConsumerWidget {
   const OtpVerificationScreen({super.key});
   static const String name = '/otp-verification';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    final OtpController controller = Get.put(OtpController());
+    final secondsRemaining = ref.watch(otpProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -76,24 +60,20 @@ class OtpVerificationScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Timer with GetX
-              Obx(() {
-                if (controller.secondsRemaining.value > 0) {
-                  return Text(
-                    "This code will expire in ${controller.secondsRemaining.value}s",
-                    style: textTheme.bodyMedium,
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              }),
+              // Timer with Riverpod
+              if (secondsRemaining > 0)
+                Text(
+                  "This code will expire in ${secondsRemaining}s",
+                  style: textTheme.bodyMedium,
+                )
+              else
+                const SizedBox.shrink(),
 
               const SizedBox(height: 8),
               GestureDetector(
                 onTap: () {
-                  if (controller.secondsRemaining.value == 0) {
-                    controller.secondsRemaining.value = 120;
-                    controller.onInit();
+                  if (secondsRemaining == 0) {
+                    ref.read(otpProvider.notifier).resetTimer();
                   }
                 },
                 child: Text(
