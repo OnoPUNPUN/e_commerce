@@ -1,6 +1,7 @@
 import 'package:e_commerce/features/auth/presentation/controllers/main_navbar_controller.dart';
-import 'package:e_commerce/features/auth/presentation/screens/home_screen.dart';
+import 'package:e_commerce/features/home/presentation/screens/home_screen.dart';
 import 'package:e_commerce/features/categories/presnetation/screens/categories_screen.dart';
+import 'package:e_commerce/features/wish/screens/wish_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
@@ -18,7 +19,7 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
     HomeScreen(),
     CategoriesScreen(),
     HomeScreen(),
-    HomeScreen(),
+    WishListScreen(),
   ];
 
   @override

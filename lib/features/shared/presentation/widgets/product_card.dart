@@ -5,9 +5,7 @@ import '../../../../app/asset_paths.dart';
 import '../../../../app/utils/constans.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({
-    super.key,
-  });
+  const ProductCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +16,10 @@ class ProductCard extends StatelessWidget {
       child: SizedBox(
         width: 140,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: AppColors.themeColor.withOpacity(0.1),
                 borderRadius: BorderRadius.only(
@@ -30,41 +29,45 @@ class ProductCard extends StatelessWidget {
               ),
               child: Image.asset(
                 AssetPaths.shoeImage,
-                width: 120,
-                height: 80,
+                width: 130,
+                height: 60,
+                fit: BoxFit.cover,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(6.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 4,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     "Nike Air Jordan A45GH",
                     maxLines: 1,
-                    style: TextStyle(overflow: TextOverflow.ellipsis),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                   ),
+                  SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "${tkSign}120",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.themeColor,
+                      Expanded(
+                        child: Text(
+                          "${tkSign}120",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.themeColor,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
-                      Wrap(
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
-                            Icons.star,
-                            size: 18,
-                            color: Colors.amber,
-                          ),
-                          Text("4.2"),
+                          Icon(Icons.star, size: 14, color: Colors.amber),
+                          Text("4.2", style: TextStyle(fontSize: 10)),
                         ],
                       ),
+                      SizedBox(width: 4),
                       Card(
                         color: AppColors.themeColor,
                         shape: RoundedRectangleBorder(
@@ -74,7 +77,7 @@ class ProductCard extends StatelessWidget {
                           padding: const EdgeInsets.all(2),
                           child: Icon(
                             Icons.favorite_outline_outlined,
-                            size: 16,
+                            size: 12,
                             color: Colors.white,
                           ),
                         ),
