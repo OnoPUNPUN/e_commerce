@@ -1,4 +1,6 @@
+import 'package:e_commerce/app/app_colors.dart';
 import 'package:e_commerce/app/asset_paths.dart';
+import 'package:e_commerce/app/utils/constans.dart';
 import 'package:e_commerce/features/auth/presentation/controllers/main_navbar_controller.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/app_bar_icon.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/home_banner_slider.dart';
@@ -6,6 +8,8 @@ import 'package:e_commerce/features/shared/presentation/widgets/product_categori
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
+import '../../../shared/presentation/widgets/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -51,7 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               _buildCategoriesList(),
               _buildSectionHeader(title: "Popular", onTap: () {}),
+              _buildPopularProductList(),
+              _buildSectionHeader(title: "Special", onTap: () {}),
+              _buildSpecialProductList(),
               _buildSectionHeader(title: "New", onTap: () {}),
+              _buildNewProductList(),
             ],
           ),
         ),
@@ -110,4 +118,23 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+Widget _buildPopularProductList() {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
+  );
+}
+Widget _buildSpecialProductList() {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
+  );
+}
+Widget _buildNewProductList() {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
+  );
 }
