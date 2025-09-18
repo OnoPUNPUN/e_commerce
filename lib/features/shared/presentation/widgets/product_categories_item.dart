@@ -1,5 +1,5 @@
 import 'package:e_commerce/app/app_colors.dart';
-import 'package:e_commerce/features/products/product_list_screen.dart';
+import 'package:e_commerce/features/products/presentation/screen/product_list_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProductCategoriesItem extends StatelessWidget {

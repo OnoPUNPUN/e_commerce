@@ -5,7 +5,8 @@ import 'package:e_commerce/features/auth/presentation/screens/sign_up_screen.dar
 import 'package:e_commerce/features/auth/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../features/products/product_list_screen.dart';
+import '../features/products/presentation/screen/product_details_screen.dart';
+import '../features/products/presentation/screen/product_list_screen.dart';
 
 MaterialPageRoute onGenerateRoute(RouteSettings settings) {
   late Widget screen;
@@ -23,6 +24,8 @@ MaterialPageRoute onGenerateRoute(RouteSettings settings) {
   } else if (settings.name == ProductListScreen.name) {
     final String categoryName = settings.arguments as String;
     screen = ProductListScreen(categoryName: categoryName);
-   }
+  } else if (settings.name == ProductDetailsScreen.name) {
+    screen = ProductDetailsScreen();
+  }
   return MaterialPageRoute(builder: (ctx) => screen);
 }
