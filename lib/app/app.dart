@@ -13,7 +13,8 @@ class CraftyBay extends StatefulWidget {
   const CraftyBay({super.key});
 
   static final LanguageController languageController = LanguageController();
-
+  static final GlobalKey<NavigatorState> navigatorKey =
+  GlobalKey<NavigatorState>();
   @override
   State<CraftyBay> createState() => _CraftyBayState();
 }
