@@ -1,7 +1,7 @@
 import 'package:e_commerce/app/app_colors.dart';
 import 'package:e_commerce/app/asset_paths.dart';
 import 'package:e_commerce/app/utils/constans.dart';
-import 'package:e_commerce/features/auth/presentation/controllers/main_navbar_controller.dart';
+import 'package:e_commerce/features/shared/presentation/controllers/main_navbar_controller.dart';
 import 'package:e_commerce/features/home/presentation/widgets/app_bar_icon.dart';
 import 'package:e_commerce/features/home/presentation/widgets/home_banner_slider.dart';
 import 'package:e_commerce/features/shared/presentation/widgets/product_categories_item.dart';

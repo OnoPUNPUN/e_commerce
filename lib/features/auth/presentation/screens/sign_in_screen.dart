@@ -1,4 +1,4 @@
-import 'package:e_commerce/features/auth/presentation/screens/bottom_navbar_screen.dart';
+import 'package:e_commerce/features/shared/presentation/screen/bottom_navbar_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:e_commerce/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/app_logo.dart';

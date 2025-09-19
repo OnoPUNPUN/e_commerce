@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
 import '../../../../app/app_colors.dart';
-import '../../../../app/utils/constans.dart';
 
 class TotalPriceAndCartSection extends StatelessWidget {
-  const TotalPriceAndCartSection({super.key});
+  const TotalPriceAndCartSection({super.key, required this.buttonName, required this.heading, required this.price});
+  final String buttonName;
+  final String heading;
+  final String price;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +25,9 @@ class TotalPriceAndCartSection extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Price", style: TextStyle(color: Colors.black38)),
+              Text(heading, style: TextStyle(color: Colors.black38)),
               Text(
-                "${tkSign}100",
+                price,
                 style: textTheme.titleMedium?.copyWith(
                   color: AppColors.themeColor,
                 ),
@@ -35,7 +36,7 @@ class TotalPriceAndCartSection extends StatelessWidget {
           ),
           SizedBox(
             width: 120,
-            child: FilledButton(onPressed: () {}, child: Text("Add To Cart")),
+            child: FilledButton(onPressed: () {}, child: Text(buttonName)),
           ),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:e_commerce/app/utils/constans.dart';
 import 'package:e_commerce/features/products/presentation/widgets/color_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -101,7 +102,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ],
             ),
           ),
-          const TotalPriceAndCartSection(),
+          const TotalPriceAndCartSection(buttonName: "Add To Cart", heading: 'Price', price: '${tkSign}100',),
         ],
       ),
     );

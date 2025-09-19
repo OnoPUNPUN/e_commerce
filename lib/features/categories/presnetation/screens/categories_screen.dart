@@ -1,4 +1,4 @@
-import 'package:e_commerce/features/auth/presentation/controllers/main_navbar_controller.dart';
+import 'package:e_commerce/features/shared/presentation/controllers/main_navbar_controller.dart';
 import 'package:e_commerce/features/shared/presentation/widgets/product_categories_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
