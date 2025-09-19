@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../app/app_colors.dart';
+import '../../../shared/presentation/widgets/inc_dec_button.dart';
 import '../widgets/product_image_slider.dart';
 import '../widgets/total_price_and_cart_section.dart';
 
@@ -61,6 +62,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 color: Colors.white,
                               ),
                             ),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: 80,
+                            child: IncDecButton(onChange: (int value) {}),
                           ),
                         ],
                       ),
