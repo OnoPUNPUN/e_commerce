@@ -1,8 +1,10 @@
+import 'package:e_commerce/features/products/presentation/widgets/color_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app/app_colors.dart';
 import '../../../shared/presentation/widgets/inc_dec_button.dart';
 import '../widgets/product_image_slider.dart';
+import '../widgets/size_picker.dart';
 import '../widgets/total_price_and_cart_section.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -69,6 +71,29 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: IncDecButton(onChange: (int value) {}),
                           ),
                         ],
+                      ),
+                      Text('Color', style: TextStyle(fontSize: 16)),
+                      const SizedBox(height: 6),
+                      ColorPicker(
+                        colors: ['Red', 'White', 'Black'],
+                        onSelected: (String color) {},
+                      ),
+                      const SizedBox(height: 8),
+                      Text('Size', style: TextStyle(fontSize: 16)),
+                      const SizedBox(height: 6),
+                      SizePicker(
+                        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+                        onSelected: (String size) {},
+                      ),
+                      const SizedBox(height: 8),
+                      Text('Description', style: TextStyle(fontSize: 18)),
+                      Text(
+                        '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book''',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
