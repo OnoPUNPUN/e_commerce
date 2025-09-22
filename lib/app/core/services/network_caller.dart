@@ -58,7 +58,7 @@ class NetworkCaller {
 
   Future<NetworkResponse> postRequest({
     required String url,
-    Map<String, String>? body,
+    Map<String, dynamic>? body,
     bool isFromLogin = false,
   }) async {
     try {
@@ -274,7 +274,7 @@ class NetworkCaller {
 
   void _logRequest(
       String url,
-      Map<String, String>? body,
+      Map<String, dynamic>? body,
       Map<String, String>? headers,
       ) {
     _logger.i(
