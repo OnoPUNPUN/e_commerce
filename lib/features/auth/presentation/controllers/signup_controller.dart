@@ -13,7 +13,8 @@ class SignUpController extends GetxController {
 
   String? get errorMessage => _errorMessage;
 
-  Future<void> signUp(SignUpRequestModel requestModel) async {
+  Future<bool> signUp(SignUpRequestModel requestModel) async {
+    bool isSuccess = false;
     _inProgress = true;
     update();
 
@@ -21,9 +22,15 @@ class SignUpController extends GetxController {
         .postRequest(url: urls.signUpUrl, body: requestModel.toJson());
 
     if(response.isSuccess) {
+      _errorMessage = null;
+      isSuccess = true;
 
     } else {
-
+      _errorMessage = response.body?['msg'] ?? response.errorMessage;
     }
+    _inProgress = false;
+    update();
+
+    return isSuccess;
   }
 }

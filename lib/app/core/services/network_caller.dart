@@ -25,8 +25,9 @@ class NetworkCaller {
       Response response = await get(uri, headers: headers);
       _logResponse(url, response);
 
-      if (response.statusCode == 200) {
-        final decodedJson = jsonDecode(response.body);
+      final decodedJson = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
@@ -38,6 +39,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: _unAuthorizeMessage,
+          body: decodedJson,
         );
       } else {
         final decodedJson = jsonDecode(response.body);
@@ -45,6 +47,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          body: decodedJson,
         );
       }
     } catch (e) {
@@ -77,8 +80,9 @@ class NetworkCaller {
       );
       _logResponse(url, response);
 
-      if (response.statusCode == 200) {
-        final decodedJson = jsonDecode(response.body);
+      final decodedJson = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
@@ -92,6 +96,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: _unAuthorizeMessage,
+          body: decodedJson,
         );
       } else {
         final decodedJson = jsonDecode(response.body);
@@ -99,6 +104,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          body: decodedJson,
         );
       }
     } catch (e) {
@@ -131,8 +137,9 @@ class NetworkCaller {
       );
       _logResponse(url, response);
 
-      if (response.statusCode == 200) {
-        final decodedJson = jsonDecode(response.body);
+      final decodedJson = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
@@ -146,6 +153,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: _unAuthorizeMessage,
+          body: decodedJson,
         );
       } else {
         final decodedJson = jsonDecode(response.body);
@@ -153,6 +161,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          body: decodedJson,
         );
       }
     } catch (e) {
@@ -185,8 +194,9 @@ class NetworkCaller {
       );
       _logResponse(url, response);
 
-      if (response.statusCode == 200) {
-        final decodedJson = jsonDecode(response.body);
+      final decodedJson = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
@@ -200,6 +210,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: _unAuthorizeMessage,
+          body: decodedJson,
         );
       } else {
         final decodedJson = jsonDecode(response.body);
@@ -207,6 +218,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          body: decodedJson,
         );
       }
     } catch (e) {
@@ -239,8 +251,9 @@ class NetworkCaller {
       );
       _logResponse(url, response);
 
-      if (response.statusCode == 200) {
-        final decodedJson = jsonDecode(response.body);
+      final decodedJson = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
@@ -254,6 +267,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: _unAuthorizeMessage,
+          body: decodedJson,
         );
       } else {
         final decodedJson = jsonDecode(response.body);
@@ -261,6 +275,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          body: decodedJson,
         );
       }
     } catch (e) {
@@ -273,26 +288,26 @@ class NetworkCaller {
   }
 
   void _logRequest(
-      String url,
-      Map<String, dynamic>? body,
-      Map<String, String>? headers,
-      ) {
+    String url,
+    Map<String, dynamic>? body,
+    Map<String, String>? headers,
+  ) {
     _logger.i(
       '================== REQUEST ========================\n'
-          'URL: $url\n'
-          'HEADERS: $headers\n'
-          'BODY: $body\n'
-          '=============================================',
+      'URL: $url\n'
+      'HEADERS: $headers\n'
+      'BODY: $body\n'
+      '=============================================',
     );
   }
 
   void _logResponse(String url, Response response) {
     _logger.i(
       '=================== RESPONSE =======================\n'
-          'URL: $url\n'
-          'STATUS CODE: ${response.statusCode}\n'
-          'BODY: ${response.body}\n'
-          '=============================================',
+      'URL: $url\n'
+      'STATUS CODE: ${response.statusCode}\n'
+      'BODY: ${response.body}\n'
+      '=============================================',
     );
   }
 }

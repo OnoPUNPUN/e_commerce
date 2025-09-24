@@ -1,8 +1,13 @@
+import 'package:e_commerce/features/auth/data/model.dart';
+import 'package:e_commerce/features/auth/presentation/controllers/signup_controller.dart';
 import 'package:e_commerce/features/auth/presentation/screens/otp_verificatio_screen.dart';
+import 'package:e_commerce/features/shared/presentation/widgets/center_cicular_progress.dart';
+import 'package:e_commerce/features/shared/presentation/widgets/show_snack_bar.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:e_commerce/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -21,6 +26,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  final SignUpController _signUpController = Get.find<SignUpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -127,18 +134,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    FilledButton(
-                      onPressed: () {
-                        //TODO:   HAVE TO REMOVE COMMENT
-                        // if (_formKey.currentState!.validate()) {
-                        //   _onTapSignUpButton();
-                        // }
-                        _onTapSignUpButton();
+                    GetBuilder<SignUpController>(
+                      builder: (controller) {
+                        return Visibility(
+                          visible: controller.signUpInProgress == false,
+                          replacement: CenterCicularProgress(),
+                          child: FilledButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _onTapSignUpButton();
+                              }
+                            },
+                            child: const Text(
+                              "Sign Up",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        );
                       },
-                      child: const Text(
-                        "Sign Up",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
                     ),
                     const SizedBox(height: 25),
                     Row(
@@ -168,7 +181,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _onTapSignUpButton() {
-    Navigator.pushNamed(context, OtpVerificationScreen.name);
+    _signUp();
+  }
+
+  Future<void> _signUp() async {
+    SignUpRequestModel mode = SignUpRequestModel(
+      firstName: _firstNameTEController.text.trim(),
+      lastName: _lastNameTEController.text.trim(),
+      email: _emailTEController.text.trim(),
+      password: _passwordTEController.text.trim(),
+      phone: _passwordTEController.text.trim(),
+      city: _addressTEController.text.trim(),
+    );
+
+    final bool isSuccessful = await _signUpController.signUp(mode);
+
+    if (!mounted) return;
+    if (isSuccessful) {
+      showSnackbarMessage(context, "OTP sent successfully");
+      Navigator.pushNamed(context, OtpVerificationScreen.name);
+    } else {
+      showSnackbarMessage(context, _signUpController.errorMessage!);
+    }
   }
 
   void _onTapSignInButton() {
