@@ -1,8 +1,15 @@
+import 'package:e_commerce/features/auth/data/login_request_model.dart';
+import 'package:e_commerce/features/auth/presentation/controllers/login_controller.dart';
 import 'package:e_commerce/features/shared/presentation/screen/bottom_navbar_screen.dart';
+import 'package:e_commerce/features/shared/presentation/widgets/center_cicular_progress.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:e_commerce/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../../app/controllers/auth_controller.dart';
+import '../../../shared/presentation/widgets/show_snack_bar.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -17,6 +24,8 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  final LoginController _loginController = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -72,17 +81,24 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    FilledButton(
-                      onPressed: () {
-                        // if (_formKey.currentState!.validate()) {
-                        //   _onTapLoginButton();
-                        // }
-                        _onTapLoginButton();
-                      },
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                    GetBuilder<LoginController>(
+                      builder: (_) {
+                        return Visibility(
+                          visible: _loginController.logInProgress == false,
+                          replacement: CenterCicularProgress(),
+                          child: FilledButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _onTapLoginButton();
+                              }
+                            },
+                            child: const Text(
+                              "Login",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        );
+                      }
                     ),
                     const SizedBox(height: 25),
                     Row(
@@ -109,7 +125,29 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _onTapLoginButton() {
-    Navigator.pushReplacementNamed(context, BottomNavbarScreen.name);
+    _signIn();
+  }
+
+  Future<void> _signIn() async {
+    LoginRequestModel requestModel = LoginRequestModel(
+      email: _emailTEController.text.trim(),
+      password: _passwordTEController.text,
+    );
+    bool isSuccess = await _loginController.login(requestModel);
+
+    if (isSuccess) {
+      await Get.find<AuthController>().saveUserData(
+        _loginController.userModel!,
+        _loginController.accessToken!,
+      );
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        BottomNavbarScreen.name,
+            (predicate) => false,
+      );
+    } else {
+      showSnackbarMessage(context, _loginController.errorMessage!);
+    }
   }
 
   void _onTapSignUpButton() {

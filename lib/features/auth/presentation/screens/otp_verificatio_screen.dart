@@ -1,8 +1,16 @@
 import 'package:e_commerce/app/app_colors.dart';
+import 'package:e_commerce/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:e_commerce/features/shared/presentation/screen/bottom_navbar_screen.dart';
+import 'package:e_commerce/features/shared/presentation/widgets/center_cicular_progress.dart';
+import 'package:e_commerce/features/shared/presentation/widgets/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:e_commerce/features/auth/presentation/widgets/app_logo.dart';
+
+import '../../../../app/controllers/auth_controller.dart';
+import '../../data/verify_otp_request_model.dart';
+import '../controllers/verify_otp_controller.dart';
 
 class OtpController extends GetxController {
   var secondsRemaining = 120.obs;
@@ -21,9 +29,21 @@ class OtpController extends GetxController {
   }
 }
 
-class OtpVerificationScreen extends StatelessWidget {
-  const OtpVerificationScreen({super.key});
+class OtpVerificationScreen extends StatefulWidget {
+  const OtpVerificationScreen({super.key, required this.email});
+
   static const String name = '/otp-verification';
+
+  final String email;
+
+  @override
+  State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
+}
+
+class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
+  final TextEditingController _otpTEController = TextEditingController();
+  final VerifyOtpController _verifyOtpController =
+      Get.find<VerifyOtpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,17 +83,24 @@ class OtpVerificationScreen extends StatelessWidget {
                   inactiveColor: Colors.grey.shade400,
                 ),
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                controller: _otpTEController,
                 onChanged: (value) {},
               ),
               const SizedBox(height: 24),
 
-              // Next Button
-              FilledButton(
-                onPressed: () {
-                  // TODO: verify OTP API call
+              GetBuilder<VerifyOtpController>(
+                builder: (verifyController) {
+                  return Visibility(
+                    visible: verifyController.verifyOtpInProgress == false,
+                    replacement: CenterCicularProgress(),
+                    child: FilledButton(
+                      onPressed: _onTapVerifyButton,
+                      child: const Text("Next"),
+                    ),
+                  );
                 },
-                child: const Text("Next"),
               ),
+
               const SizedBox(height: 16),
 
               // Timer with GetX
@@ -104,10 +131,56 @@ class OtpVerificationScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: _onTapBackToLoginButton,
+                child: const Text('Back to Login'),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _onTapVerifyButton() {
+    if (_otpTEController.text.length != 4) {
+      showSnackbarMessage(context, "Please enter a valid 4-digit OTP");
+      return;
+    }
+    _verifyOtp();
+  }
+
+  Future<void> _verifyOtp() async {
+    VerifyOtpRequestModel model = VerifyOtpRequestModel(
+      email: widget.email,
+      otp: _otpTEController.text,
+    );
+
+    final bool isSuccess = await _verifyOtpController.verifyOtp(model);
+    if (isSuccess) {
+      await Get.find<AuthController>().saveUserData(
+        _verifyOtpController.userModel!,
+        _verifyOtpController.accessToken!,
+      );
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        BottomNavbarScreen.name,
+        (predicate) => false,
+      );
+    } else {
+      showSnackbarMessage(context, _verifyOtpController.errorMessage!);
+    }
+  }
+
+  void _onTapBackToLoginButton() {
+    Navigator.pushNamedAndRemoveUntil(context, SignInScreen.name, (p) => false);
+  }
+
+  @override
+  void dispose() {
+    _otpTEController.dispose();
+    super.dispose();
   }
 }

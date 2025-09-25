@@ -1,4 +1,4 @@
-import 'package:e_commerce/features/auth/data/model.dart';
+import 'package:e_commerce/features/auth/data/sign_up_request_model.dart';
 import 'package:e_commerce/features/auth/presentation/controllers/signup_controller.dart';
 import 'package:e_commerce/features/auth/presentation/screens/otp_verificatio_screen.dart';
 import 'package:e_commerce/features/shared/presentation/widgets/center_cicular_progress.dart';
@@ -199,7 +199,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!mounted) return;
     if (isSuccessful) {
       showSnackbarMessage(context, "OTP sent successfully");
-      Navigator.pushNamed(context, OtpVerificationScreen.name);
+      Navigator.pushNamed(
+        context,
+        OtpVerificationScreen.name,
+        arguments: _emailTEController.text.trim(),
+      );
     } else {
       showSnackbarMessage(context, _signUpController.errorMessage!);
     }

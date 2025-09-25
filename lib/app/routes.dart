@@ -18,7 +18,8 @@ MaterialPageRoute onGenerateRoute(RouteSettings settings) {
   } else if (settings.name == SignUpScreen.name) {
     screen = SignUpScreen();
   } else if (settings.name == OtpVerificationScreen.name) {
-    screen = OtpVerificationScreen();
+    final String email = settings.arguments as String;
+    screen = OtpVerificationScreen(email: email);
   } else if (settings.name == BottomNavbarScreen.name) {
     screen = BottomNavbarScreen();
   } else if (settings.name == ProductListScreen.name) {
