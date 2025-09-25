@@ -1,9 +1,11 @@
 import 'package:e_commerce/app/app_colors.dart';
 import 'package:e_commerce/app/asset_paths.dart';
 import 'package:e_commerce/app/utils/constans.dart';
+import 'package:e_commerce/features/home/presentation/controller/home_slides_controller.dart';
 import 'package:e_commerce/features/shared/presentation/controllers/main_navbar_controller.dart';
 import 'package:e_commerce/features/home/presentation/widgets/app_bar_icon.dart';
 import 'package:e_commerce/features/home/presentation/widgets/home_banner_slider.dart';
+import 'package:e_commerce/features/shared/presentation/widgets/center_cicular_progress.dart';
 import 'package:e_commerce/features/shared/presentation/widgets/product_categories_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -45,7 +47,17 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               _buildSearchBar(),
               const SizedBox(height: 16),
-              HomeBannerSlider(),
+              GetBuilder<HomeSlidesController>(
+                builder: (controller) {
+                  if (controller.getSlidersInprogress) {
+                    return SizedBox(
+                      height: 180,
+                      child: CenterCicularProgress(),
+                    );
+                  }
+                  return HomeBannerSlider(sliders: controller.sliders,);
+                },
+              ),
               const SizedBox(height: 16),
               _buildSectionHeader(
                 title: "All Categories",
@@ -126,12 +138,14 @@ Widget _buildPopularProductList() {
     child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
   );
 }
+
 Widget _buildSpecialProductList() {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
     child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
   );
 }
+
 Widget _buildNewProductList() {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
