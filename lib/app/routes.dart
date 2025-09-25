@@ -1,3 +1,5 @@
+import 'package:e_commerce/features/review/presentation/screen/create_review_screen.dart';
+import 'package:e_commerce/features/review/presentation/screen/review_screen.dart';
 import 'package:e_commerce/features/shared/presentation/screen/bottom_navbar_screen.dart';
 import 'package:e_commerce/features/auth/presentation/screens/otp_verificatio_screen.dart';
 import 'package:e_commerce/features/auth/presentation/screens/sign_in_screen.dart';
@@ -27,6 +29,10 @@ MaterialPageRoute onGenerateRoute(RouteSettings settings) {
     screen = ProductListScreen(categoryName: categoryName);
   } else if (settings.name == ProductDetailsScreen.name) {
     screen = ProductDetailsScreen();
+  } else if (settings.name == ReviewScreen.name) {
+    screen = ReviewScreen();
+  } else if (settings.name == CreateReviewScreen.name) {
+    screen = CreateReviewScreen();
   }
   return MaterialPageRoute(builder: (ctx) => screen);
 }

@@ -1,5 +1,6 @@
 import 'package:e_commerce/app/utils/constans.dart';
 import 'package:e_commerce/features/products/presentation/widgets/color_picker.dart';
+import 'package:e_commerce/features/review/presentation/screen/review_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app/app_colors.dart';
@@ -46,7 +47,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           const SizedBox(width: 4),
                           const Text('4.2', style: TextStyle(fontSize: 16)),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, ReviewScreen.name);
+                            },
                             child: const Text(
                               'Reviews',
                               style: TextStyle(fontSize: 15),
@@ -102,7 +105,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ],
             ),
           ),
-          const TotalPriceAndCartSection(buttonName: "Add To Cart", heading: 'Price', price: '${tkSign}100',),
+          const TotalPriceAndCartSection(
+            buttonName: "Add To Cart",
+            heading: 'Price',
+            price: '${tkSign}100',
+          ),
         ],
       ),
     );
