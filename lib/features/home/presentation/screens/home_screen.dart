@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../shared/presentation/controllers/category_controller.dart';
 import '../../../shared/presentation/widgets/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: CenterCicularProgress(),
                     );
                   }
-                  return HomeBannerSlider(sliders: controller.sliders,);
+                  return HomeBannerSlider(sliders: controller.sliders);
                 },
               ),
               const SizedBox(height: 16),
@@ -82,16 +83,27 @@ class _HomeScreenState extends State<HomeScreen> {
   SizedBox _buildCategoriesList() {
     return SizedBox(
       height: 120,
-      child: ListView.separated(
-        itemCount: 10,
-        primary: false,
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return ProductCategoriesItem();
-        },
-        separatorBuilder: (context, index) {
-          return const SizedBox(width: 14);
+      child: GetBuilder<CategoryController>(
+        builder: (controller) {
+          if (controller.isInitialLoading) {
+            return CenterCicularProgress();
+          }
+          return ListView.separated(
+            itemCount: controller.categorieList.length > 10
+                ? 10
+                : controller.categorieList.length,
+            primary: false,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return ProductCategoriesItem(
+                categoryModel: controller.categorieList[index],
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(width: 14);
+            },
+          );
         },
       ),
     );

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
+import '../controllers/category_controller.dart';
+
 class BottomNavbarScreen extends StatefulWidget {
   const BottomNavbarScreen({super.key});
 
@@ -29,6 +31,7 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
   void initState() {
     super.initState();
     Get.find<HomeSlidesController>().getHomeSliders();
+    Get.find<CategoryController>().getCategoryList();
   }
 
   @override

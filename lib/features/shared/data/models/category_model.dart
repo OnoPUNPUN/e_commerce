@@ -17,7 +17,7 @@ class CategoryModel {
 
   factory CategoryModel.fromJson(Map<String, dynamic> jsonData) {
     return CategoryModel(
-      id: jsonData['id'],
+      id: jsonData['_id'],
       title: jsonData['title'],
       icon: jsonData['icon'],
     );
