@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../features/products/presentation/screen/product_details_screen.dart';
 import '../features/products/presentation/screen/product_list_screen.dart';
+import '../features/shared/data/models/category_model.dart';
 
 MaterialPageRoute onGenerateRoute(RouteSettings settings) {
   late Widget screen;
@@ -25,8 +26,8 @@ MaterialPageRoute onGenerateRoute(RouteSettings settings) {
   } else if (settings.name == BottomNavbarScreen.name) {
     screen = BottomNavbarScreen();
   } else if (settings.name == ProductListScreen.name) {
-    final String categoryName = settings.arguments as String;
-    screen = ProductListScreen(categoryName: categoryName);
+    final category = settings.arguments as CategoryModel;
+    screen = ProductListScreen(category: category);
   } else if (settings.name == ProductDetailsScreen.name) {
     screen = ProductDetailsScreen();
   } else if (settings.name == ReviewScreen.name) {

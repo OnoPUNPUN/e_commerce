@@ -147,20 +147,20 @@ class _HomeScreenState extends State<HomeScreen> {
 Widget _buildPopularProductList() {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
-    child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
+    //child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
   );
 }
 
 Widget _buildSpecialProductList() {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
-    child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
+    //child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
   );
 }
 
 Widget _buildNewProductList() {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
-    child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
+    //child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
   );
 }

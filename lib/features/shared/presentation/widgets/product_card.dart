@@ -4,9 +4,12 @@ import '../../../../app/app_colors.dart';
 import '../../../../app/asset_paths.dart';
 import '../../../../app/utils/constans.dart';
 import '../../../products/presentation/screen/product_details_screen.dart';
+import '../../data/models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key});
+  final ProductModel productModel;
+
+  const ProductCard({super.key, required this.productModel});
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +35,22 @@ class ProductCard extends StatelessWidget {
                     topRight: Radius.circular(8),
                   ),
                 ),
-                child: Image.asset(
-                  AssetPaths.shoeImage,
+                child: Image.network(
+                  productModel.photos.firstOrNull ?? '',
                   width: 130,
                   height: 60,
                   fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) {
+                    return SizedBox(
+                      width: 140,
+                      height: 80,
+                      child: Icon(
+                        Icons.error_outline,
+                        size: 48,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
                 ),
               ),
               Padding(
@@ -46,7 +60,7 @@ class ProductCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Nike Air Jordan A45GH",
+                      productModel.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -60,7 +74,7 @@ class ProductCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            "${tkSign}120",
+                            "$tkSign${productModel.currentPrice}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColors.themeColor,
@@ -72,7 +86,10 @@ class ProductCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.star, size: 14, color: Colors.amber),
-                            Text("4.2", style: TextStyle(fontSize: 10)),
+                            Text(
+                              productModel.rating.toString(),
+                              style: TextStyle(fontSize: 10),
+                            ),
                           ],
                         ),
                         SizedBox(width: 4),
