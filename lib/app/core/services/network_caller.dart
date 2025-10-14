@@ -12,14 +12,14 @@ class NetworkCaller {
   final Logger _logger = Logger();
 
   final VoidCallback onUnAuthorize;
-  final String accessToken;
+  final String Function() accessToken;
 
   NetworkCaller({required this.onUnAuthorize, required this.accessToken});
 
   Future<NetworkResponse> getRequest({required String url}) async {
     try {
       Uri uri = Uri.parse(url);
-      final Map<String, String> headers = {'token': accessToken};
+      final Map<String, String> headers = {'token': accessToken()};
 
       _logRequest(url, null, headers);
       Response response = await get(uri, headers: headers);
@@ -69,7 +69,7 @@ class NetworkCaller {
 
       final Map<String, String> headers = {
         'content-type': 'application/json',
-        'token': accessToken,
+        'token': accessToken(),
       };
 
       _logRequest(url, body, headers);
@@ -126,7 +126,7 @@ class NetworkCaller {
 
       final Map<String, String> headers = {
         'content-type': 'application/json',
-        'token': accessToken,
+        'token': accessToken(),
       };
 
       _logRequest(url, body, headers);
@@ -183,7 +183,7 @@ class NetworkCaller {
 
       final Map<String, String> headers = {
         'content-type': 'application/json',
-        'token': accessToken,
+        'token': accessToken(),
       };
 
       _logRequest(url, body, headers);
@@ -240,7 +240,7 @@ class NetworkCaller {
 
       final Map<String, String> headers = {
         'content-type': 'application/json',
-        'token': accessToken,
+        'token': accessToken(),
       };
 
       _logRequest(url, body, headers);

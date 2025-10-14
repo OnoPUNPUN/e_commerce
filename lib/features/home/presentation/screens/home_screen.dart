@@ -12,6 +12,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/presentation/controllers/category_controller.dart';
+import '../../../shared/presentation/controllers/new_product_controller.dart';
+import '../../../shared/presentation/controllers/popular_product_controller.dart';
+import '../../../shared/presentation/controllers/special_product_controller.dart';
 import '../../../shared/presentation/widgets/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,6 +25,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    // Trigger load more when user scrolls near the bottom
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      Get.find<PopularProductController>().getPopularProducts();
+      Get.find<SpecialProductController>().getSpecialProducts();
+      Get.find<NewProductController>().getNewProducts();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -67,11 +97,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               _buildCategoriesList(),
-              _buildSectionHeader(title: "Popular", onTap: () {}),
+              const SizedBox(height: 16),
+              _buildSectionHeader(
+                title: "Popular",
+                onTap: () {},
+              ),
               _buildPopularProductList(),
-              _buildSectionHeader(title: "Special", onTap: () {}),
+              const SizedBox(height: 16),
+              _buildSectionHeader(
+                title: "Special",
+                onTap: () {},
+              ),
               _buildSpecialProductList(),
-              _buildSectionHeader(title: "New", onTap: () {}),
+              const SizedBox(height: 16),
+              _buildSectionHeader(
+                title: "New",
+                onTap: () {},
+              ),
               _buildNewProductList(),
             ],
           ),
@@ -117,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title, style: Theme.of(context).textTheme.titleMedium),
-        TextButton(onPressed: onTap, child: Text('See All')),
+        TextButton(onPressed: onTap, child: const Text('See All')),
       ],
     );
   }
@@ -128,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onSubmitted: (String? text) {},
       decoration: InputDecoration(
         hintText: 'Search',
-        prefixIcon: Icon(Icons.search),
+        prefixIcon: const Icon(Icons.search),
         fillColor: Colors.grey.shade100,
         filled: true,
         enabledBorder: OutlineInputBorder(
@@ -142,25 +184,109 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
 
-Widget _buildPopularProductList() {
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    //child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
-  );
-}
+  Widget _buildPopularProductList() {
+    return GetBuilder<PopularProductController>(
+      builder: (controller) {
+        if (controller.isInitialLoading) {
+          return SizedBox(
+            height: 150,
+            child: CenterCicularProgress(),
+          );
+        }
 
-Widget _buildSpecialProductList() {
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    //child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
-  );
-}
+        if (controller.productList.isEmpty) {
+          return SizedBox(
+            height: 150,
+            child: Center(
+              child: Text('No popular products found'),
+            ),
+          );
+        }
 
-Widget _buildNewProductList() {
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    //child: Row(children: [1, 2, 3, 4, 56].map((e) => ProductCard()).toList()),
-  );
+        return SizedBox(
+          height: 150,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.productList.length,
+            itemBuilder: (context, index) {
+              return ProductCard(
+                productModel: controller.productList[index],
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSpecialProductList() {
+    return GetBuilder<SpecialProductController>(
+      builder: (controller) {
+        if (controller.isInitialLoading) {
+          return SizedBox(
+            height: 150,
+            child: CenterCicularProgress(),
+          );
+        }
+
+        if (controller.productList.isEmpty) {
+          return SizedBox(
+            height: 150,
+            child: Center(
+              child: Text('No special products found'),
+            ),
+          );
+        }
+
+        return SizedBox(
+          height: 150,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.productList.length,
+            itemBuilder: (context, index) {
+              return ProductCard(
+                productModel: controller.productList[index],
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildNewProductList() {
+    return GetBuilder<NewProductController>(
+      builder: (controller) {
+        if (controller.isInitialLoading) {
+          return SizedBox(
+            height: 150,
+            child: CenterCicularProgress(),
+          );
+        }
+
+        if (controller.productList.isEmpty) {
+          return SizedBox(
+            height: 150,
+            child: Center(
+              child: Text('No new products found'),
+            ),
+          );
+        }
+
+        return SizedBox(
+          height: 150,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.productList.length,
+            itemBuilder: (context, index) {
+              return ProductCard(
+                productModel: controller.productList[index],
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
 }

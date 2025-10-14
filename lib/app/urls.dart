@@ -10,4 +10,13 @@ class urls {
 
   static String productList(int pageNo, int pageSize, String categoryId) =>
       '$_baseUrl/products?count=$pageSize&page=$pageNo&category=$categoryId';
+
+  static String popularProducts(int pageNo, int pageSize) =>
+      '$_baseUrl/products?count=$pageSize&page=$pageNo&tag=popular';
+
+  static String specialProducts(int pageNo, int pageSize) =>
+      '$_baseUrl/products?count=$pageSize&page=$pageNo&tag=special';
+
+  static String newProducts(int pageNo, int pageSize) =>
+      '$_baseUrl/products?count=$pageSize&page=$pageNo&tag=new';
 }

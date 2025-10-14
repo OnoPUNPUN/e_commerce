@@ -7,6 +7,9 @@ import 'package:e_commerce/features/shared/presentation/controllers/main_navbar_
 import 'package:get/get.dart';
 
 import '../features/auth/presentation/controllers/verify_otp_controller.dart';
+import '../features/shared/presentation/controllers/new_product_controller.dart';
+import '../features/shared/presentation/controllers/popular_product_controller.dart';
+import '../features/shared/presentation/controllers/special_product_controller.dart';
 import 'controllers/auth_controller.dart';
 
 
@@ -21,5 +24,9 @@ class ControllerBindings extends Bindings {
     Get.put(LoginController());
     Get.put(HomeSlidesController());
     Get.put(CategoryController());
+
+    Get.put(PopularProductController());
+    Get.put(SpecialProductController());
+    Get.put(NewProductController());
   }
 }
