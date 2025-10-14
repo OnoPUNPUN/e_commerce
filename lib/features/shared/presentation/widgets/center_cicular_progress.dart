@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../../app/app_colors.dart';
 
 class CenterCicularProgress extends StatelessWidget {
-  const CenterCicularProgress({super.key});
+  final double? size;
+
+  const CenterCicularProgress({super.key, this.size});
 
   @override
   Widget build(BuildContext context) {

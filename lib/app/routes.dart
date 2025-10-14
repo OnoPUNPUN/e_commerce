@@ -29,7 +29,8 @@ MaterialPageRoute onGenerateRoute(RouteSettings settings) {
     final category = settings.arguments as CategoryModel;
     screen = ProductListScreen(category: category);
   } else if (settings.name == ProductDetailsScreen.name) {
-    screen = ProductDetailsScreen();
+    final String productId = settings.arguments as String;
+    screen = ProductDetailsScreen(productId: productId);
   } else if (settings.name == ReviewScreen.name) {
     screen = ReviewScreen();
   } else if (settings.name == CreateReviewScreen.name) {

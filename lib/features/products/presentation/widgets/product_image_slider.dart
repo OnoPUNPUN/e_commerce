@@ -3,7 +3,9 @@ import 'package:e_commerce/app/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ProductImageSlider extends StatefulWidget {
-  const ProductImageSlider({super.key});
+  const ProductImageSlider({super.key, required this.imageUrls});
+
+  final List<String> imageUrls;
 
   @override
   State<ProductImageSlider> createState() => _ProductImageSliderState();
@@ -24,14 +26,19 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
               _currentIndex.value = index;
             },
           ),
-          items: [1, 2, 3, 4, 5].map((i) {
+          items: widget.imageUrls.map((image) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
                   width: MediaQuery.of(context).size.width,
-                  color: Colors.grey.shade300,
                   alignment: Alignment.center,
-                  child: Text('text $i', style: TextStyle(fontSize: 16.0)),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    image: DecorationImage(
+                      image: NetworkImage(image),
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
                 );
               },
             );
@@ -42,25 +49,25 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
           left: 0,
           right: 0,
           child: ValueListenableBuilder(
-              valueListenable: _currentIndex,
-              builder: (context, value, child) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (int i = 0; i < 5; i++)
-                      Container(
-                        width: 12,
-                        height: 12,
-                        margin: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: value == i ? AppColors.themeColor : null,
-                          border: Border.all(color: Colors.grey),
-                        ),
+            valueListenable: _currentIndex,
+            builder: (context, value, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < widget.imageUrls.length; i++)
+                    Container(
+                      width: 12,
+                      height: 12,
+                      margin: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: value == i ? AppColors.themeColor : null,
+                        border: Border.all(color: Colors.grey),
                       ),
-                  ],
-                );
-              }
+                    ),
+                ],
+              );
+            },
           ),
         ),
       ],

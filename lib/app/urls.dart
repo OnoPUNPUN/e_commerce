@@ -19,4 +19,10 @@ class urls {
 
   static String newProducts(int pageNo, int pageSize) =>
       '$_baseUrl/products?count=$pageSize&page=$pageNo&tag=new';
+
+  static String productDetailsUrl(String productId) =>
+      '$_baseUrl/products/id/$productId';
+
+  static const String addToCartUrl = '$_baseUrl/cart';
+  static const String cartListUrl = '$_baseUrl/cart';
 }
