@@ -16,7 +16,7 @@ NetworkCaller setUpNetworkClient() {
 }
 
 Future<void> _onUnAuthorize() async {
-  // TODO: remove cache
+  await Get.find<AuthController>().clearUserData();
   Navigator.pushNamedAndRemoveUntil(
     CraftyBay.navigatorKey.currentContext!,
     SignInScreen.name,

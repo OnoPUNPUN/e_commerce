@@ -2,7 +2,7 @@ import 'package:e_commerce/app/app_theme.dart';
 import 'package:e_commerce/app/controller_bindings.dart';
 import 'package:e_commerce/app/controllers/language_controller.dart';
 import 'package:e_commerce/app/routes.dart';
-import 'package:e_commerce/features/auth/presentation/screens/splash_screen.dart';
+import 'package:e_commerce/features/shared/presentation/screen/bottom_navbar_screen.dart';
 import 'package:e_commerce/l10n/app_localizations.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class CraftyBay extends StatefulWidget {
 
   static final LanguageController languageController = LanguageController();
   static final GlobalKey<NavigatorState> navigatorKey =
-  GlobalKey<NavigatorState>();
+      GlobalKey<NavigatorState>();
   @override
   State<CraftyBay> createState() => _CraftyBayState();
 }
@@ -32,6 +32,7 @@ class _CraftyBayState extends State<CraftyBay> {
       builder: (languageController) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
+          navigatorKey: CraftyBay.navigatorKey,
           localizationsDelegates: [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -44,7 +45,7 @@ class _CraftyBayState extends State<CraftyBay> {
           theme: AppTheme.lightThemeData,
           darkTheme: AppTheme.darkThemeData,
           themeMode: ThemeMode.light,
-          home: SplashScreen(),
+          home: BottomNavbarScreen(),
           initialRoute: '/',
           onGenerateRoute: onGenerateRoute,
           initialBinding: ControllerBindings(),

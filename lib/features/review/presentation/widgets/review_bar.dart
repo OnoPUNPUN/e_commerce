@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../../app/app_colors.dart';
+import '../../../../app/controllers/auth_controller.dart';
+import '../../../auth/presentation/screens/sign_in_screen.dart';
 import '../screen/create_review_screen.dart';
 
 class ReviewBar extends StatelessWidget {
@@ -10,7 +13,6 @@ class ReviewBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.themeColor.withOpacity(0.1),
@@ -40,8 +42,13 @@ class ReviewBar extends StatelessWidget {
             width: 100,
             child: FilledButton(
               style: FilledButton.styleFrom(shape: CircleBorder()),
-              onPressed: () {
-                Navigator.pushNamed(context, CreateReviewScreen.name);
+              onPressed: () async {
+                final authController = Get.find<AuthController>();
+                if (await authController.isUserAlreadyLoggedIn()) {
+                  Navigator.pushNamed(context, CreateReviewScreen.name);
+                } else {
+                  Navigator.pushNamed(context, SignInScreen.name);
+                }
               },
               child: Text(
                 buttonName,
