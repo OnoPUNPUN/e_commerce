@@ -4,8 +4,9 @@ import 'package:e_commerce/features/products/presentation/widgets/product_image_
 import 'package:e_commerce/features/products/presentation/widgets/size_picker.dart';
 import 'package:e_commerce/features/review/presentation/screen/review_screen.dart';
 import 'package:e_commerce/features/shared/presentation/widgets/center_cicular_progress.dart';
-
 import 'package:e_commerce/features/shared/presentation/widgets/inc_dec_button.dart';
+import 'package:e_commerce/features/shared/presentation/widgets/show_snack_bar.dart';
+import 'package:e_commerce/features/wish/presentation/controller/wishlist_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,7 +25,8 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  final ProductDetailsController _productDetailsController = ProductDetailsController();
+  final ProductDetailsController _productDetailsController =
+      ProductDetailsController();
 
   @override
   void initState() {
@@ -32,6 +34,51 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _productDetailsController.getProductDetails(widget.productId);
     });
+  }
+
+  Future<void> _navigateToReviews(String productId) async {
+    Navigator.pushNamed(context, ReviewScreen.name, arguments: productId);
+  }
+
+  Future<void> _toggleWishlist(String productId) async {
+    try {
+      final WishlistController wishlistController =
+          Get.find<WishlistController>();
+
+      if (wishlistController.isInWishlist(productId)) {
+        // Remove from wishlist
+        String? wishlistItemId = wishlistController.getWishlistItemId(
+          productId,
+        );
+        if (wishlistItemId != null) {
+          bool isSuccess = await wishlistController.removeFromWishlist(
+            wishlistItemId,
+          );
+          if (isSuccess) {
+            showSnackbarMessage(context, 'Removed from wishlist');
+          } else {
+            showSnackbarMessage(
+              context,
+              wishlistController.errorMessage ??
+                  'Failed to remove from wishlist',
+            );
+          }
+        }
+      } else {
+        // Add to wishlist
+        bool isSuccess = await wishlistController.addToWishlist(productId);
+        if (isSuccess) {
+          showSnackbarMessage(context, 'Added to wishlist');
+        } else {
+          showSnackbarMessage(
+            context,
+            wishlistController.errorMessage ?? 'Failed to add to wishlist',
+          );
+        }
+      }
+    } catch (e) {
+      showSnackbarMessage(context, 'Error: ${e.toString()}');
+    }
   }
 
   @override
@@ -64,9 +111,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ProductImageSlider(
-                        imageUrls: product.photos ?? const [],
-                      ),
+                      ProductImageSlider(imageUrls: product.photos),
                       Padding(
                         padding: const EdgeInsets.all(16),
                         child: Column(
@@ -81,34 +126,52 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             // Rating + Reviews + Fav + Quantity
                             Row(
                               children: [
-                                const Icon(Icons.star, size: 20, color: Colors.amber),
+                                const Icon(
+                                  Icons.star,
+                                  size: 20,
+                                  color: Colors.amber,
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  product.rating ?? "0",
+                                  product.rating,
                                   style: const TextStyle(fontSize: 16),
                                 ),
                                 TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, ReviewScreen.name);
-                                  },
+                                  onPressed: () =>
+                                      _navigateToReviews(product.id),
                                   child: const Text(
                                     'Reviews',
                                     style: TextStyle(fontSize: 15),
                                   ),
                                 ),
-                                Card(
-                                  color: AppColors.themeColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(2),
-                                    child: Icon(
-                                      Icons.favorite_outline,
-                                      size: 18,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                GetBuilder<WishlistController>(
+                                  builder: (wishlistController) {
+                                    final isInWishlist = wishlistController
+                                        .isInWishlist(product.id);
+                                    return GestureDetector(
+                                      onTap: () => _toggleWishlist(product.id),
+                                      child: Card(
+                                        color: isInWishlist
+                                            ? Colors.red
+                                            : AppColors.themeColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Icon(
+                                            isInWishlist
+                                                ? Icons.favorite
+                                                : Icons.favorite_outline,
+                                            size: 18,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                                 const Spacer(),
                                 SizedBox(
@@ -119,23 +182,29 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
 
                             // Color Section
-                            if ((product.colors ?? []).isNotEmpty) ...[
+                            if (product.colors.isNotEmpty) ...[
                               const SizedBox(height: 12),
-                              const Text('Color', style: TextStyle(fontSize: 16)),
+                              const Text(
+                                'Color',
+                                style: TextStyle(fontSize: 16),
+                              ),
                               const SizedBox(height: 6),
                               ColorPicker(
-                                colors: product.colors ?? [],
+                                colors: product.colors,
                                 onSelected: (String color) {},
                               ),
                             ],
 
                             // Size Section
-                            if ((product.sizes ?? []).isNotEmpty) ...[
+                            if (product.sizes.isNotEmpty) ...[
                               const SizedBox(height: 12),
-                              const Text('Size', style: TextStyle(fontSize: 16)),
+                              const Text(
+                                'Size',
+                                style: TextStyle(fontSize: 16),
+                              ),
                               const SizedBox(height: 6),
                               SizePicker(
-                                sizes: product.sizes ?? [],
+                                sizes: product.sizes,
                                 onSelected: (String size) {},
                               ),
                             ],
@@ -162,9 +231,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
               ),
 
-              TotalPriceAndCartSection(
-                productModel: product,
-              ),
+              TotalPriceAndCartSection(productModel: product),
             ],
           );
         },

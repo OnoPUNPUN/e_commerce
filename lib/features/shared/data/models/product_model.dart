@@ -54,4 +54,16 @@ class ProductModel {
       tags: tagsList,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'title': title,
+      'photos': photos,
+      'current_price': currentPrice,
+      'rating': rating,
+      'brand': brand,
+      'tags': tags,
+    };
+  }
 }

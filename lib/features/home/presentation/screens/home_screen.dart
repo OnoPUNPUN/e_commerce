@@ -1,6 +1,4 @@
-import 'package:e_commerce/app/app_colors.dart';
 import 'package:e_commerce/app/asset_paths.dart';
-import 'package:e_commerce/app/utils/constans.dart';
 import 'package:e_commerce/features/home/presentation/controller/home_slides_controller.dart';
 import 'package:e_commerce/features/shared/presentation/controllers/main_navbar_controller.dart';
 import 'package:e_commerce/features/home/presentation/widgets/app_bar_icon.dart';
@@ -16,6 +14,8 @@ import '../../../shared/presentation/controllers/new_product_controller.dart';
 import '../../../shared/presentation/controllers/popular_product_controller.dart';
 import '../../../shared/presentation/controllers/special_product_controller.dart';
 import '../../../shared/presentation/widgets/product_card.dart';
+import '../../../shared/presentation/widgets/show_snack_bar.dart';
+import '../../../wish/presentation/controller/wishlist_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -49,6 +49,47 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _toggleWishlist(String productId) async {
+    try {
+      final WishlistController wishlistController =
+          Get.find<WishlistController>();
+
+      if (wishlistController.isInWishlist(productId)) {
+        // Remove from wishlist
+        String? wishlistItemId = wishlistController.getWishlistItemId(
+          productId,
+        );
+        if (wishlistItemId != null) {
+          bool isSuccess = await wishlistController.removeFromWishlist(
+            wishlistItemId,
+          );
+          if (isSuccess) {
+            showSnackbarMessage(context, 'Removed from wishlist');
+          } else {
+            showSnackbarMessage(
+              context,
+              wishlistController.errorMessage ??
+                  'Failed to remove from wishlist',
+            );
+          }
+        }
+      } else {
+        // Add to wishlist
+        bool isSuccess = await wishlistController.addToWishlist(productId);
+        if (isSuccess) {
+          showSnackbarMessage(context, 'Added to wishlist');
+        } else {
+          showSnackbarMessage(
+            context,
+            wishlistController.errorMessage ?? 'Failed to add to wishlist',
+          );
+        }
+      }
+    } catch (e) {
+      showSnackbarMessage(context, 'Error: ${e.toString()}');
+    }
   }
 
   @override
@@ -98,22 +139,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               _buildCategoriesList(),
               const SizedBox(height: 16),
-              _buildSectionHeader(
-                title: "Popular",
-                onTap: () {},
-              ),
+              _buildSectionHeader(title: "Popular", onTap: () {}),
               _buildPopularProductList(),
               const SizedBox(height: 16),
-              _buildSectionHeader(
-                title: "Special",
-                onTap: () {},
-              ),
+              _buildSectionHeader(title: "Special", onTap: () {}),
               _buildSpecialProductList(),
               const SizedBox(height: 16),
-              _buildSectionHeader(
-                title: "New",
-                onTap: () {},
-              ),
+              _buildSectionHeader(title: "New", onTap: () {}),
               _buildNewProductList(),
             ],
           ),
@@ -189,18 +221,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetBuilder<PopularProductController>(
       builder: (controller) {
         if (controller.isInitialLoading) {
-          return SizedBox(
-            height: 150,
-            child: CenterCicularProgress(),
-          );
+          return SizedBox(height: 150, child: CenterCicularProgress());
         }
 
         if (controller.productList.isEmpty) {
           return SizedBox(
             height: 150,
-            child: Center(
-              child: Text('No popular products found'),
-            ),
+            child: Center(child: Text('No popular products found')),
           );
         }
 
@@ -210,8 +237,15 @@ class _HomeScreenState extends State<HomeScreen> {
             scrollDirection: Axis.horizontal,
             itemCount: controller.productList.length,
             itemBuilder: (context, index) {
-              return ProductCard(
-                productModel: controller.productList[index],
+              final product = controller.productList[index];
+              return GetBuilder<WishlistController>(
+                builder: (wishlistController) {
+                  return ProductCard(
+                    productModel: product,
+                    onWishlistToggle: () => _toggleWishlist(product.id),
+                    isInWishlist: wishlistController.isInWishlist(product.id),
+                  );
+                },
               );
             },
           ),
@@ -224,18 +258,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetBuilder<SpecialProductController>(
       builder: (controller) {
         if (controller.isInitialLoading) {
-          return SizedBox(
-            height: 150,
-            child: CenterCicularProgress(),
-          );
+          return SizedBox(height: 150, child: CenterCicularProgress());
         }
 
         if (controller.productList.isEmpty) {
           return SizedBox(
             height: 150,
-            child: Center(
-              child: Text('No special products found'),
-            ),
+            child: Center(child: Text('No special products found')),
           );
         }
 
@@ -245,8 +274,15 @@ class _HomeScreenState extends State<HomeScreen> {
             scrollDirection: Axis.horizontal,
             itemCount: controller.productList.length,
             itemBuilder: (context, index) {
-              return ProductCard(
-                productModel: controller.productList[index],
+              final product = controller.productList[index];
+              return GetBuilder<WishlistController>(
+                builder: (wishlistController) {
+                  return ProductCard(
+                    productModel: product,
+                    onWishlistToggle: () => _toggleWishlist(product.id),
+                    isInWishlist: wishlistController.isInWishlist(product.id),
+                  );
+                },
               );
             },
           ),
@@ -259,18 +295,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetBuilder<NewProductController>(
       builder: (controller) {
         if (controller.isInitialLoading) {
-          return SizedBox(
-            height: 150,
-            child: CenterCicularProgress(),
-          );
+          return SizedBox(height: 150, child: CenterCicularProgress());
         }
 
         if (controller.productList.isEmpty) {
           return SizedBox(
             height: 150,
-            child: Center(
-              child: Text('No new products found'),
-            ),
+            child: Center(child: Text('No new products found')),
           );
         }
 
@@ -280,8 +311,15 @@ class _HomeScreenState extends State<HomeScreen> {
             scrollDirection: Axis.horizontal,
             itemCount: controller.productList.length,
             itemBuilder: (context, index) {
-              return ProductCard(
-                productModel: controller.productList[index],
+              final product = controller.productList[index];
+              return GetBuilder<WishlistController>(
+                builder: (wishlistController) {
+                  return ProductCard(
+                    productModel: product,
+                    onWishlistToggle: () => _toggleWishlist(product.id),
+                    isInWishlist: wishlistController.isInWishlist(product.id),
+                  );
+                },
               );
             },
           ),

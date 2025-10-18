@@ -46,7 +46,8 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
-          errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          errorMessage:
+              decodedJson['msg'] ?? decodedJson['data'] ?? _defaultErrorMessage,
           body: decodedJson,
         );
       }
@@ -103,7 +104,8 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
-          errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          errorMessage:
+              decodedJson['msg'] ?? decodedJson['data'] ?? _defaultErrorMessage,
           body: decodedJson,
         );
       }
@@ -160,7 +162,8 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
-          errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          errorMessage:
+              decodedJson['msg'] ?? decodedJson['data'] ?? _defaultErrorMessage,
           body: decodedJson,
         );
       }
@@ -217,7 +220,8 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
-          errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          errorMessage:
+              decodedJson['msg'] ?? decodedJson['data'] ?? _defaultErrorMessage,
           body: decodedJson,
         );
       }
@@ -238,17 +242,10 @@ class NetworkCaller {
     try {
       Uri uri = Uri.parse(url);
 
-      final Map<String, String> headers = {
-        'content-type': 'application/json',
-        'token': accessToken(),
-      };
+      final Map<String, String> headers = {'token': accessToken()};
 
       _logRequest(url, body, headers);
-      Response response = await delete(
-        uri,
-        headers: headers,
-        body: jsonEncode(body),
-      );
+      Response response = await delete(uri, headers: headers);
       _logResponse(url, response);
 
       final decodedJson = jsonDecode(response.body);
@@ -274,7 +271,8 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
-          errorMessage: decodedJson['data'] ?? _defaultErrorMessage,
+          errorMessage:
+              decodedJson['msg'] ?? decodedJson['data'] ?? _defaultErrorMessage,
           body: decodedJson,
         );
       }

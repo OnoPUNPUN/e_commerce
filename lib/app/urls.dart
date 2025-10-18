@@ -25,4 +25,19 @@ class urls {
 
   static const String addToCartUrl = '$_baseUrl/cart';
   static const String cartListUrl = '$_baseUrl/cart';
+
+  static String deleteCartItemUrl(String cartItemId) =>
+      '$_baseUrl/cart/$cartItemId';
+
+  // Wishlist URLs
+  static const String wishlistUrl = '$_baseUrl/wishlist';
+  static String deleteWishlistItemUrl(String wishlistItemId) =>
+      '$_baseUrl/wishlist/$wishlistItemId';
+
+  // Review URLs
+  static const String createReviewUrl = '$_baseUrl/review';
+  static String updateReviewUrl(String reviewId) =>
+      '$_baseUrl/reviews/$reviewId';
+  static String getReviewsUrl(String productId) =>
+      '$_baseUrl/reviews?product=$productId';
 }

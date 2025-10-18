@@ -32,9 +32,11 @@ MaterialPageRoute onGenerateRoute(RouteSettings settings) {
     final String productId = settings.arguments as String;
     screen = ProductDetailsScreen(productId: productId);
   } else if (settings.name == ReviewScreen.name) {
-    screen = ReviewScreen();
+    final String productId = settings.arguments as String;
+    screen = ReviewScreen(productId: productId);
   } else if (settings.name == CreateReviewScreen.name) {
-    screen = CreateReviewScreen();
+    final String productId = settings.arguments as String;
+    screen = CreateReviewScreen(productId: productId);
   }
   return MaterialPageRoute(builder: (ctx) => screen);
 }

@@ -6,10 +6,16 @@ import '../../../auth/presentation/screens/sign_in_screen.dart';
 import '../screen/create_review_screen.dart';
 
 class ReviewBar extends StatelessWidget {
-  const ReviewBar({super.key, required this.buttonName, required this.heading});
+  const ReviewBar({
+    super.key,
+    required this.buttonName,
+    required this.heading,
+    this.onTap,
+  });
 
   final String buttonName;
   final String heading;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +48,16 @@ class ReviewBar extends StatelessWidget {
             width: 100,
             child: FilledButton(
               style: FilledButton.styleFrom(shape: CircleBorder()),
-              onPressed: () async {
-                final authController = Get.find<AuthController>();
-                if (await authController.isUserAlreadyLoggedIn()) {
-                  Navigator.pushNamed(context, CreateReviewScreen.name);
-                } else {
-                  Navigator.pushNamed(context, SignInScreen.name);
-                }
-              },
+              onPressed:
+                  onTap ??
+                  () async {
+                    final authController = Get.find<AuthController>();
+                    if (await authController.isUserAlreadyLoggedIn()) {
+                      Navigator.pushNamed(context, CreateReviewScreen.name);
+                    } else {
+                      Navigator.pushNamed(context, SignInScreen.name);
+                    }
+                  },
               child: Text(
                 buttonName,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),

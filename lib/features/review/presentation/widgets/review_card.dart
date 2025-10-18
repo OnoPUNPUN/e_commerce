@@ -1,8 +1,11 @@
 import 'package:e_commerce/app/app_colors.dart';
+import 'package:e_commerce/features/review/data/models/review_model.dart';
 import 'package:flutter/material.dart';
 
 class ReviewCard extends StatelessWidget {
-  const ReviewCard({super.key});
+  final ReviewModel review;
+
+  const ReviewCard({super.key, required this.review});
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +31,32 @@ class ReviewCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("PUNPUN", style: Theme.of(context).textTheme.titleSmall),
+                  Row(
+                    children: [
+                      Text(
+                        review.userName,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      const SizedBox(width: 8),
+                      Row(
+                        children: List.generate(5, (index) {
+                          return Icon(
+                            index < review.rating
+                                ? Icons.star
+                                : Icons.star_border,
+                            size: 16,
+                            color: Colors.amber,
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 8),
                   Text(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+                    review.comment,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium!.copyWith(color: Colors.grey),
                   ),
                 ],
               ),

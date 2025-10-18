@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 
 import '../../../../app/app_colors.dart';
-import '../../../../app/asset_paths.dart';
 import '../../../../app/utils/constans.dart';
 import '../../../products/presentation/screen/product_details_screen.dart';
 import '../../data/models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel productModel;
+  final VoidCallback? onWishlistToggle;
+  final bool isInWishlist;
 
-  const ProductCard({super.key, required this.productModel});
+  const ProductCard({
+    super.key,
+    required this.productModel,
+    this.onWishlistToggle,
+    this.isInWishlist = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
-            context, ProductDetailsScreen.name, arguments: productModel.id);
+          context,
+          ProductDetailsScreen.name,
+          arguments: productModel.id,
+        );
       },
       child: Card(
         color: Colors.white,
@@ -94,17 +103,24 @@ class ProductCard extends StatelessWidget {
                           ],
                         ),
                         SizedBox(width: 4),
-                        Card(
-                          color: AppColors.themeColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: Icon(
-                              Icons.favorite_outline_outlined,
-                              size: 12,
-                              color: Colors.white,
+                        GestureDetector(
+                          onTap: onWishlistToggle,
+                          child: Card(
+                            color: isInWishlist
+                                ? Colors.red
+                                : AppColors.themeColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: Icon(
+                                isInWishlist
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline_outlined,
+                                size: 12,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),

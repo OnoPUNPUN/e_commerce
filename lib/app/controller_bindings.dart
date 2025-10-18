@@ -11,8 +11,9 @@ import '../features/cart/presentation/controller/cart_list_controller.dart';
 import '../features/shared/presentation/controllers/new_product_controller.dart';
 import '../features/shared/presentation/controllers/popular_product_controller.dart';
 import '../features/shared/presentation/controllers/special_product_controller.dart';
+import '../features/wish/presentation/controller/wishlist_controller.dart';
+import '../features/review/presentation/controller/review_controller.dart';
 import 'controllers/auth_controller.dart';
-
 
 class ControllerBindings extends Bindings {
   @override
@@ -30,5 +31,7 @@ class ControllerBindings extends Bindings {
     Get.put(PopularProductController());
     Get.put(SpecialProductController());
     Get.put(NewProductController());
+    Get.put(WishlistController());
+    Get.put(ReviewController());
   }
 }

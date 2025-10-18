@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../app/app_colors.dart';
 import '../../../shared/presentation/widgets/inc_dec_button.dart';
+import '../../../shared/presentation/widgets/show_snack_bar.dart';
 import '../../data/models/cart_item_model.dart';
 import '../controller/cart_list_controller.dart';
 
@@ -62,7 +63,7 @@ class CartItem extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => _deleteCartItem(context),
                         icon: Icon(Icons.delete_forever_outlined),
                       ),
                     ],
@@ -76,9 +77,14 @@ class CartItem extends StatelessWidget {
                           context,
                         ).titleSmall?.copyWith(color: AppColors.themeColor),
                       ),
-                      IncDecButton(onChange: (int value) {
-                        Get.find<CartListController>().updateCart(cartItemModel.id, value);
-                      }),
+                      IncDecButton(
+                        onChange: (int value) {
+                          Get.find<CartListController>().updateCart(
+                            cartItemModel.id,
+                            value,
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ],
@@ -88,5 +94,45 @@ class CartItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _deleteCartItem(BuildContext context) async {
+    final CartListController cartController = Get.find<CartListController>();
+
+    // Show confirmation dialog
+    bool? shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Remove Item'),
+        content: const Text(
+          'Are you sure you want to remove this item from your cart?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldDelete == true && context.mounted) {
+      bool isSuccess = await cartController.deleteCartItem(cartItemModel.id);
+
+      if (context.mounted) {
+        if (isSuccess) {
+          showSnackbarMessage(context, 'Item removed from cart');
+        } else {
+          showSnackbarMessage(
+            context,
+            cartController.errorMessage ?? 'Failed to remove item',
+          );
+        }
+      }
+    }
   }
 }
