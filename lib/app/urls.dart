@@ -40,4 +40,7 @@ class urls {
       '$_baseUrl/reviews/$reviewId';
   static String getReviewsUrl(String productId) =>
       '$_baseUrl/reviews?product=$productId';
+
+  // Order URLs
+  static const String createOrderUrl = '$_baseUrl/order';
 }

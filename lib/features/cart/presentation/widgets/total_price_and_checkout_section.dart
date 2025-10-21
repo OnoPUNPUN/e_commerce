@@ -1,4 +1,5 @@
 import 'package:e_commerce/app/utils/constans.dart';
+import 'package:e_commerce/features/order/presentation/screen/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -45,9 +46,21 @@ class TotalPriceAndCheckoutSection extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
-            width: 120,
-            child: FilledButton(onPressed: () {}, child: Text('Checkout')),
+          GetBuilder<CartListController>(
+            builder: (controller) {
+              return SizedBox(
+                width: 120,
+                child: FilledButton(
+                  onPressed: () {
+                    Get.toNamed(
+                      PaymentScreen.name,
+                      arguments: controller.totalPrice,
+                    );
+                  },
+                  child: Text('Checkout'),
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:e_commerce/features/review/presentation/screen/create_review_screen.dart';
 import 'package:e_commerce/features/review/presentation/screen/review_screen.dart';
+import 'package:e_commerce/features/order/presentation/screen/payment_screen.dart';
 import 'package:e_commerce/features/shared/presentation/screen/bottom_navbar_screen.dart';
 import 'package:e_commerce/features/auth/presentation/screens/otp_verificatio_screen.dart';
 import 'package:e_commerce/features/auth/presentation/screens/sign_in_screen.dart';
@@ -37,6 +38,9 @@ MaterialPageRoute onGenerateRoute(RouteSettings settings) {
   } else if (settings.name == CreateReviewScreen.name) {
     final String productId = settings.arguments as String;
     screen = CreateReviewScreen(productId: productId);
+  } else if (settings.name == PaymentScreen.name) {
+    final int totalAmount = settings.arguments as int;
+    screen = PaymentScreen(totalAmount: totalAmount);
   }
   return MaterialPageRoute(builder: (ctx) => screen);
 }
